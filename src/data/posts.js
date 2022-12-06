@@ -55,6 +55,29 @@ export const QUERY_ALL_POSTS_ARCHIVE = gql`
             }
           }
           excerpt
+          tags {
+            edges {
+              node {
+                name
+                slug
+              }
+            }
+          }
+          authorOptions {
+            authorLink
+            authorName
+            authorPhoto {
+              sourceUrl
+            }
+            hidePhotoInArticlePage
+            authorPhoto {
+              sourceUrl
+            }
+          }
+          buildOptions {
+            buildName
+            buildSlug
+          }
         }
       }
     }
@@ -93,6 +116,29 @@ export const QUERY_ALL_POSTS = gql`
             }
           }
           modified
+          tags {
+            edges {
+              node {
+                name
+                slug
+              }
+            }
+          }
+          authorOptions {
+            authorLink
+            authorName
+            authorPhoto {
+              sourceUrl
+            }
+            hidePhotoInArticlePage
+            authorPhoto {
+              sourceUrl
+            }
+          }
+          buildOptions {
+            buildName
+            buildSlug
+          }
         }
       }
     }
@@ -203,6 +249,29 @@ export const QUERY_POSTS_BY_CATEGORY_ID_ARCHIVE = gql`
             }
           }
           excerpt
+          tags {
+            edges {
+              node {
+                name
+                slug
+              }
+            }
+          }
+          authorOptions {
+            authorLink
+            authorName
+            authorPhoto {
+              sourceUrl
+            }
+            hidePhotoInArticlePage
+            authorPhoto {
+              sourceUrl
+            }
+          }
+          buildOptions {
+            buildName
+            buildSlug
+          }
         }
       }
     }
@@ -241,6 +310,29 @@ export const QUERY_POSTS_BY_CATEGORY_ID = gql`
             }
           }
           modified
+          tags {
+            edges {
+              node {
+                name
+                slug
+              }
+            }
+          }
+          authorOptions {
+            authorLink
+            authorName
+            authorPhoto {
+              sourceUrl
+            }
+            hidePhotoInArticlePage
+            authorPhoto {
+              sourceUrl
+            }
+          }
+          buildOptions {
+            buildName
+            buildSlug
+          }
         }
       }
     }
