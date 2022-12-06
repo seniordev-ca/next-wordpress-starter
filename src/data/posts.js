@@ -143,6 +143,29 @@ export const QUERY_POST_BY_SLUG = gql`
       title
       slug
       isSticky
+      tags {
+        edges {
+          node {
+            name
+            slug
+          }
+        }
+      }
+      authorOptions {
+        authorLink
+        authorName
+        authorPhoto {
+          sourceUrl
+        }
+        hidePhotoInArticlePage
+        authorPhoto {
+          sourceUrl
+        }
+      }
+      buildOptions {
+        buildName
+        buildSlug
+      }
     }
   }
 `;

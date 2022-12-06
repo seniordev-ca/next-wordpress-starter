@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
 import { categoryPathBySlug } from 'lib/categories';
-import { authorPathByName } from 'lib/users';
 import { formatDate } from 'lib/datetime';
 import ClassName from 'models/classname';
 
@@ -12,7 +11,15 @@ const DEFAULT_METADATA_OPTIONS = {
   compactCategories: true,
 };
 
-const Metadata = ({ className, author, date, categories, options = DEFAULT_METADATA_OPTIONS, isSticky = false }) => {
+const Metadata = ({
+  className,
+  author,
+  date,
+  categories,
+  options = DEFAULT_METADATA_OPTIONS,
+  isSticky = false,
+  authorOptions = {},
+}) => {
   const metadataClassName = new ClassName(styles.metadata);
 
   metadataClassName.addIf(className, className);
@@ -28,13 +35,13 @@ const Metadata = ({ className, author, date, categories, options = DEFAULT_METAD
               <img
                 width={author.avatar.width}
                 height={author.avatar.height}
-                src={author.avatar.url}
+                src={authorOptions.authorAvatar?.sourceUrl ? authorOptions.authorAvatar?.sourceUrl : author.avatar.url}
                 alt="Author Avatar"
               />
             )}
             By{' '}
-            <Link href={authorPathByName(author.name)}>
-              <a rel="author">{author.name}</a>
+            <Link href={authorOptions.authorLink}>
+              <a rel="author">{authorOptions.authorName}</a>
             </Link>
           </address>
         </li>

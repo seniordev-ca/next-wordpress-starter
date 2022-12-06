@@ -31,6 +31,7 @@ export default function Post({ post, socialImage, related }) {
     modified,
     featuredImage,
     isSticky = false,
+    authorOptions,
   } = post;
 
   const { metadata: siteMetadata = {}, homepage } = useSite();
@@ -93,6 +94,7 @@ export default function Post({ post, socialImage, related }) {
           categories={categories}
           options={metadataOptions}
           isSticky={isSticky}
+          authorOptions={authorOptions}
         />
       </Header>
 
