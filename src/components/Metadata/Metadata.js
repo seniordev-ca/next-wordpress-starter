@@ -31,11 +31,11 @@ const Metadata = ({
       {author && (
         <li className={styles.metadataAuthor}>
           <address>
-            {author.avatar && (
+            {authorOptions.authorAvatar?.sourceUrl && (
               <img
                 width={author.avatar.width}
                 height={author.avatar.height}
-                src={authorOptions.authorAvatar?.sourceUrl ? authorOptions.authorAvatar?.sourceUrl : author.avatar.url}
+                src={authorOptions.authorAvatar?.sourceUrl}
                 alt="Author Avatar"
               />
             )}

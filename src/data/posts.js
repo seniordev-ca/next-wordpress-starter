@@ -66,7 +66,7 @@ export const QUERY_ALL_POSTS_ARCHIVE = gql`
           authorOptions {
             authorLink
             authorName
-            authorPhoto {
+            authorAvatar {
               sourceUrl
             }
             hidePhotoInArticlePage
@@ -127,7 +127,7 @@ export const QUERY_ALL_POSTS = gql`
           authorOptions {
             authorLink
             authorName
-            authorPhoto {
+            authorAvatar {
               sourceUrl
             }
             hidePhotoInArticlePage
@@ -200,7 +200,7 @@ export const QUERY_POST_BY_SLUG = gql`
       authorOptions {
         authorLink
         authorName
-        authorPhoto {
+        authorAvatar {
           sourceUrl
         }
         hidePhotoInArticlePage
@@ -260,7 +260,7 @@ export const QUERY_POSTS_BY_CATEGORY_ID_ARCHIVE = gql`
           authorOptions {
             authorLink
             authorName
-            authorPhoto {
+            authorAvatar {
               sourceUrl
             }
             hidePhotoInArticlePage
@@ -321,7 +321,7 @@ export const QUERY_POSTS_BY_CATEGORY_ID = gql`
           authorOptions {
             authorLink
             authorName
-            authorPhoto {
+            authorAvatar {
               sourceUrl
             }
             hidePhotoInArticlePage
