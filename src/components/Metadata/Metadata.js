@@ -40,7 +40,7 @@ const Metadata = ({
               />
             )}
             By{' '}
-            <Link href={authorOptions.authorLink}>
+            <Link href={authorOptions.authorLink ?? '#'}>
               <a rel="author">{authorOptions.authorName}</a>
             </Link>
           </address>
