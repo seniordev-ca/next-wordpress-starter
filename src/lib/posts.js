@@ -16,6 +16,9 @@ import {
   QUERY_POSTS_BY_CATEGORY_ID,
   QUERY_POST_SEO_BY_SLUG,
   QUERY_POST_PER_PAGE,
+  QUERY_POSTS_BY_TAG_ID,
+  QUERY_POSTS_BY_TAG_ID_INDEX,
+  QUERY_POSTS_BY_TAG_ID_ARCHIVE,
 } from 'data/posts';
 
 /**
@@ -219,6 +222,42 @@ export async function getPostsByCategoryId({ categoryId, ...options }) {
 }
 
 /**
+ * getPostsByTagId
+ */
+
+const postsByTagIdIncludesTypes = {
+  all: QUERY_POSTS_BY_TAG_ID,
+  archive: QUERY_POSTS_BY_TAG_ID_ARCHIVE,
+  index: QUERY_POSTS_BY_TAG_ID_INDEX,
+};
+
+export async function getPostsByTagId({ tagId, ...options }) {
+  const { queryIncludes = 'index' } = options;
+
+  const apolloClient = getApolloClient();
+
+  let postData;
+
+  try {
+    postData = await apolloClient.query({
+      query: postsByTagIdIncludesTypes[queryIncludes],
+      variables: {
+        tagId,
+      },
+    });
+  } catch (e) {
+    console.log(`[posts][getPostsByTagId] Failed to query post data: ${e.message}`);
+    throw e;
+  }
+
+  const posts = postData?.data.posts.edges.map(({ node = {} }) => node);
+
+  return {
+    posts: Array.isArray(posts) && posts.map(mapPostData),
+  };
+}
+
+/**
  * getRecentPosts
  */
 
@@ -293,6 +332,16 @@ export function mapPostData(post = {}) {
     });
   }
 
+  // Clean up the tags to make them more easy to access
+
+  if (data.tags) {
+    data.tags = data.tags.edges.map(({ node }) => {
+      return {
+        ...node,
+      };
+    });
+  }
+
   // Clean up the featured image to make them more easy to access
 
   if (data.featuredImage) {
@@ -306,32 +355,37 @@ export function mapPostData(post = {}) {
  * getRelatedPosts
  */
 
-export async function getRelatedPosts(categories, postId, count = 5) {
-  if (!Array.isArray(categories) || categories.length === 0) return;
+export async function getRelatedPosts(tags, relatedPosts = [], postId, count = 5) {
+  if (!Array.isArray(tags) || tags.length === 0) return;
 
   let related = {
-    category: categories && categories.shift(),
+    tag: tags && tags.shift(),
+    posts: relatedPosts,
   };
 
-  if (related.category) {
-    const { posts } = await getPostsByCategoryId({
-      categoryId: related.category.databaseId,
+  if (related.tag) {
+    const { posts } = await getPostsByTagId({
+      tagId: related.tag.databaseId.toString(),
       queryIncludes: 'archive',
     });
 
     const filtered = posts.filter(({ postId: id }) => id !== postId);
     const sorted = sortObjectsByDate(filtered);
 
-    related.posts = sorted.map((post) => ({ title: post.title, slug: post.slug }));
+    related.posts.push(...sorted.map((post) => ({ title: post.title, slug: post.slug })));
   }
 
-  if (!Array.isArray(related.posts) || related.posts.length === 0) {
-    const relatedPosts = await getRelatedPosts(categories, postId, count);
+  // if (!Array.isArray(related.posts) || related.posts.length === 0) {
+  if (related.tag || related.posts.length <= count) {
+    const relatedPosts = await getRelatedPosts(tags, related.posts, postId, count);
     related = relatedPosts || related;
   }
 
   if (Array.isArray(related.posts) && related.posts.length > count) {
-    return related.posts.slice(0, count);
+    return {
+      tag: related.tag,
+      posts: related.posts.slice(0, count),
+    };
   }
 
   return related;

@@ -36,7 +36,16 @@ export default function Home({ posts, pagination }) {
       <Section>
         <Container>
           <h2 className="sr-only">Posts</h2>
-          <ul className={styles.posts}>
+          <div className="row">
+            {posts.map((post) => {
+              return (
+                <div key={post.slug} className="col-6 col-md-12">
+                  <PostCard post={post} />
+                </div>
+              );
+            })}
+          </div>
+          {/* <ul className={styles.posts}>
             {posts.map((post) => {
               return (
                 <li key={post.slug}>
@@ -44,7 +53,7 @@ export default function Home({ posts, pagination }) {
                 </li>
               );
             })}
-          </ul>
+          </ul> */}
           {pagination && (
             <Pagination
               addCanonical={false}

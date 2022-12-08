@@ -16,7 +16,16 @@ export const POST_FIELDS = gql`
     databaseId
     date
     isSticky
-    postId
+    tags {
+      edges {
+        node {
+          databaseId
+          id
+          name
+          slug
+        }
+      }
+    }
     slug
     title
   }
@@ -58,6 +67,8 @@ export const QUERY_ALL_POSTS_ARCHIVE = gql`
           tags {
             edges {
               node {
+                databaseId
+                id
                 name
                 slug
               }
@@ -119,6 +130,8 @@ export const QUERY_ALL_POSTS = gql`
           tags {
             edges {
               node {
+                databaseId
+                id
                 name
                 slug
               }
@@ -192,6 +205,8 @@ export const QUERY_POST_BY_SLUG = gql`
       tags {
         edges {
           node {
+            databaseId
+            id
             name
             slug
           }
@@ -252,6 +267,8 @@ export const QUERY_POSTS_BY_CATEGORY_ID_ARCHIVE = gql`
           tags {
             edges {
               node {
+                databaseId
+                id
                 name
                 slug
               }
@@ -313,6 +330,135 @@ export const QUERY_POSTS_BY_CATEGORY_ID = gql`
           tags {
             edges {
               node {
+                databaseId
+                id
+                name
+                slug
+              }
+            }
+          }
+          authorOptions {
+            authorLink
+            authorName
+            authorAvatar {
+              sourceUrl
+            }
+            hidePhotoInArticlePage
+            authorPhoto {
+              sourceUrl
+            }
+          }
+          buildOptions {
+            buildName
+            buildSlug
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const QUERY_POSTS_BY_TAG_ID_INDEX = gql`
+  ${POST_FIELDS}
+  query PostsByTagId($tagId: String) {
+    posts(where: { tagId: $tagId, hasPassword: false }) {
+      edges {
+        node {
+          ...PostFields
+        }
+      }
+    }
+  }
+`;
+
+export const QUERY_POSTS_BY_TAG_ID_ARCHIVE = gql`
+  ${POST_FIELDS}
+  query PostsByTagId($tagId: String!) {
+    posts(where: { tagId: $tagId, hasPassword: false }) {
+      edges {
+        node {
+          ...PostFields
+          author {
+            node {
+              avatar {
+                height
+                url
+                width
+              }
+              id
+              name
+              slug
+            }
+          }
+          excerpt
+          tags {
+            edges {
+              node {
+                databaseId
+                id
+                name
+                slug
+              }
+            }
+          }
+          authorOptions {
+            authorLink
+            authorName
+            authorAvatar {
+              sourceUrl
+            }
+            hidePhotoInArticlePage
+            authorPhoto {
+              sourceUrl
+            }
+          }
+          buildOptions {
+            buildName
+            buildSlug
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const QUERY_POSTS_BY_TAG_ID = gql`
+  ${POST_FIELDS}
+  query PostsByTagId($tagId: String!) {
+    posts(where: { tagId: $tagId, hasPassword: false }) {
+      edges {
+        node {
+          ...PostFields
+          author {
+            node {
+              avatar {
+                height
+                url
+                width
+              }
+              id
+              name
+              slug
+            }
+          }
+          content
+          excerpt
+          featuredImage {
+            node {
+              altText
+              caption
+              id
+              sizes
+              sourceUrl
+              srcSet
+            }
+          }
+          modified
+          tags {
+            edges {
+              node {
+                databaseId
+                id
                 name
                 slug
               }

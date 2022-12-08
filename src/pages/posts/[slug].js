@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 
 import { getPostBySlug, getRecentPosts, getRelatedPosts, postPathBySlug } from 'lib/posts';
-import { categoryPathBySlug } from 'lib/categories';
+import { tagPathBySlug } from 'lib/tags';
 import { formatDate } from 'lib/datetime';
 import { ArticleJsonLd } from 'lib/json-ld';
 import { helmetSettingsFromMetadata } from 'lib/site';
@@ -116,16 +116,7 @@ export default function Post({ post, socialImage, related }) {
           <p className={styles.postModified}>Last updated on {formatDate(modified)}.</p>
           {Array.isArray(relatedPostsList) && relatedPostsList.length > 0 && (
             <div className={styles.relatedPosts}>
-              {relatedPostsTitle.name ? (
-                <span>
-                  More from{' '}
-                  <Link href={relatedPostsTitle.link}>
-                    <a>{relatedPostsTitle.name}</a>
-                  </Link>
-                </span>
-              ) : (
-                <span>More Posts</span>
-              )}
+              {relatedPostsTitle.name ? <span>Related Articles</span> : <span>More Posts</span>}
               <ul>
                 {relatedPostsList.map((post) => (
                   <li key={post.title}>
@@ -153,22 +144,22 @@ export async function getStaticProps({ params = {} } = {}) {
     };
   }
 
-  const { categories, databaseId: postId } = post;
+  const { tags, databaseId: postId } = post;
 
   const props = {
     post,
     socialImage: `${process.env.OG_IMAGE_DIRECTORY}/${params?.slug}.png`,
   };
 
-  const { category: relatedCategory, posts: relatedPosts } = (await getRelatedPosts(categories, postId)) || {};
-  const hasRelated = relatedCategory && Array.isArray(relatedPosts) && relatedPosts.length;
+  const { tag: relatedTag, posts: relatedPosts } = (await getRelatedPosts(tags, [], postId, 3)) || {};
+  const hasRelated = relatedTag && Array.isArray(relatedPosts) && relatedPosts.length;
 
   if (hasRelated) {
     props.related = {
       posts: relatedPosts,
       title: {
-        name: relatedCategory.name || null,
-        link: categoryPathBySlug(relatedCategory.slug),
+        name: relatedTag.name || null,
+        link: tagPathBySlug(relatedTag.slug),
       },
     };
   }

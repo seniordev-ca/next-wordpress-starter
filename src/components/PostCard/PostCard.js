@@ -38,6 +38,11 @@ const PostCard = ({ post, options = {} }) => {
   return (
     <div className={postCardStyle}>
       {isSticky && <FaMapPin aria-label="Sticky Post" />}
+      {authorOptions.authorPhoto?.sourceUrl && (
+        <Link href={postPathBySlug(slug)}>
+          <img src={authorOptions.authorPhoto?.sourceUrl} alt="Author Avatar" />
+        </Link>
+      )}
       <Link href={postPathBySlug(slug)}>
         <a>
           <h3
